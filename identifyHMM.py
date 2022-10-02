@@ -20,16 +20,16 @@ from Bio.SeqRecord import SeqRecord
 import argparse
 import subprocess
 parser = argparse.ArgumentParser(description="Identify marker genes in\
-								in protein sequences of genomes.")
+                                in protein sequences of genomes.")
 parser.add_argument('Input', help="Target file(s). Provide unifying \
-					text of desired genome(s). Ext must be 'fna' or 'faa'.")
+                    text of desired genome(s). Ext must be 'fna' or 'faa'.")
 parser.add_argument('--markerdb', help='Provide HMM file of markers. \
-					Markers should have a descriptive ID name.')
+                    Markers should have a descriptive ID name.')
 parser.add_argument('--performProdigal', action='store_true', help='Run \
-					Prodigal on input genome nucleotide FASTA file')
+                    Prodigal on input genome nucleotide FASTA file')
 parser.add_argument('--cut_tc',action='store_true',help="use hmm profiles TC trusted cutoffs to set all thresholding")
 parser.add_argument('--outPrefix', help='Provide prefix of names for marker \
-					output files.')
+                    output files.')
 parser.add_argument('-E',help='Set E-Value to be used in hmmsearch. Default: 1E-5',default='1E-5')
 args = parser.parse_args()
 arg_dict = vars(args)
@@ -43,7 +43,7 @@ if arg_dict["performProdigal"] == True:
         outfile=open(str((name)+".faa"),"w")
         subprocess.call(["cut","-f1","-d"," ","temp1.orfs.faa"],stdout=outfile)
         os.remove("temp1.orfs.faa")
-    	os.remove("temp1.txt")
+        os.remove("temp1.txt")
 
 input_proteins = glob.glob("*.faa")
 
@@ -60,12 +60,12 @@ for in_faa in input_proteins:
     name_protein = in_faa.rsplit('.',1)[0]
     hmmer_log = open("hmmsearhc-log.txt","w")
     if arg_dict["cut_tc"] == "True":
-	subprocess.call(["hmmsearch","--cut_tc","--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
+    subprocess.call(["hmmsearch","--cut_tc","--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
     else:
-    	subprocess.call(["hmmsearch","-E",Evalue,"--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
+        subprocess.call(["hmmsearch","-E",Evalue,"--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
 genome_marker_count = {}
 hmm_names = glob.glob("*ribomarkers.tbl")
-for active_hmm in hmm_names:	
+for active_hmm in hmm_names:    
     genome_name = active_hmm[:-16]
     if os.stat(active_hmm).st_size < 1000:
         genome_marker_count[genome_name] = {}
@@ -95,12 +95,12 @@ for genome in genome_marker_count:
         reverse_gene_info = {}
         for k in genome_marker_count[genome]:
             reverse_gene_info[genome_marker_count[genome][k]] = k
-	for record in SeqIO.parse(open(str(str(genome)+".faa"), "r"), "fasta"):
-	    if record.id in reverse_gene_info.keys():
-	        marker = reverse_gene_info[record.id]
-	        out_file = open("%s_%s.faa" % (outname, marker), "a")
-	        out_file.write(">%s\n" % (genome) +str(record.seq)+"\n")
-	        out_file.close()
+    for record in SeqIO.parse(open(str(str(genome)+".faa"), "r"), "fasta"):
+        if record.id in reverse_gene_info.keys():
+            marker = reverse_gene_info[record.id]
+            out_file = open("%s_%s.faa" % (outname, marker), "a")
+            out_file.write(">%s\n" % (genome) +str(record.seq)+"\n")
+            out_file.close()
     if float(len(genome_marker_count[genome].keys())) < float(1):
         print str(genome) + " markers = " + str(len(genome_marker_count[genome].keys()))
 
