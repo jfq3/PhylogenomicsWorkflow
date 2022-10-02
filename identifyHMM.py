@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 
 """
 Using a set of phylogenetic markers BLAST protein sequences of target
@@ -60,7 +60,7 @@ for in_faa in input_proteins:
     name_protein = in_faa.rsplit('.',1)[0]
     hmmer_log = open("hmmsearhc-log.txt","w")
     if arg_dict["cut_tc"] == "True":
-    subprocess.call(["hmmsearch","--cut_tc","--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
+        subprocess.call(["hmmsearch","--cut_tc","--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
     else:
         subprocess.call(["hmmsearch","-E",Evalue,"--tblout",str(str(name_protein)+".ribomarkers.tbl"),"--notextw",markerdb, str(in_faa)],stdout=hmmer_log)
 genome_marker_count = {}
