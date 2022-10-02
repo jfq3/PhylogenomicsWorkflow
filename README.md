@@ -2,9 +2,11 @@ I had several problems following the original tutorial hosted at https://github.
 
 For one, the indentation in the python script identifyHMM was not consistent. In this repository, I have renamed the script by adding the extention ".py" and made the indentation consistent.
 
-The other problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by installing all of the required dependecies specified in the orignal README in one environment named ribotree, and Binsamity alone in anoher environment named binsanity. There may be a better way; I will have to explore for such. See https://github.com/jfq3/Virtual-Environments for yml files for my conda installations of ribotree and binsanity.
+Another problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) gives instrucitons  for a native installation and specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by installing all of the required dependecies specified in the orignal README in one environment named ribotree, and Binsamity alone in anoher environment named binsanity. There may be a better way; I will have to explore for such. See https://github.com/jfq3/Virtual-Environments for yml files for my conda installations of ribotree and binsanity.
 
-The tutorial places unkown genomes in a tree of reference genomes made up of 100 Proteobacteria belonging to the Alpahproteobacteria and Gammaproteobacteria. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla_Lite genomes.
+The installation instructions in the original README does not specify version numbers. Thus when I created the conda environment ribotree the latest version of MUSCLE (version 5) was installed. The muscle command in the original tutorial script had to be changed to work with the newer version of MUSCLE.
+
+The tutorial places unkown genomes in a tree of reference genomes made up of 100 *Proteobacteria* belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla_Lite genomes. I placed these in the directory `phyla_ref`.
 
 ---
 The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
@@ -114,7 +116,7 @@ optional arguments:
   -E E                  Set E-Value to be used in hmmsearch. Default: 1E-5
 
 ```
-The best way to show how the script is used by using an example. What I have provided on the github is an folder called `Example` that contains two subfolders. One containing MAGs (`Genomes`) and one containing reference ribosomal proteins pulled from NCBI (`HugRef`).
+The best way to show how the script is used by using an example. What I have provided on the github is an directory called `Example` that contains two subdirectorys. One containing MAGs (`Genomes`) and one containing reference ribosomal proteins pulled from NCBI (`HugRef`).
 
 **Note** When using `identifyHMM` on your own data you need to remember that you should be in the directory containing your MAGs when you run the program and ensure that the only genomes in this directory are the genomes of interest. The program will parse through every file with the suffix given as the [input]. So in this case our input is `.fna`. Second, if you want to run identifyHMM with your own gene calls you will want to exclude the `--performProdigal` flag and be sure that your gene calls end with the suffix `.faa` and are in the same directory as the genomes of interest.
 
@@ -137,7 +139,7 @@ The output of this will be 16 `.faa` files appended with the prefix spefied by `
  
  ## Step 3: Combine Reference Proteins with proteins from your MAGs ##
  
- Now that we have extracted marker genes from our genomes of interest we can merge together the Ribosomal Protein calls we just made on our genomes of interest with those in the folder '/PhylogenomicsWorkflow/Example/HugRef' accordingly.
+ Now that we have extracted marker genes from our genomes of interest we can merge together the Ribosomal Protein calls we just made on our genomes of interest with those in the directory '/PhylogenomicsWorkflow/Example/HugRef' accordingly.
 
  To do this we will use a quick bash trick that uses the text file `hug_marker_list.txt` which contains a list of the marker proteins we are searching for. Use the following Bash command:
  
