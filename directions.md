@@ -3,6 +3,7 @@
 Put genomes of interest in the directory genomes; no other files shoud be present. If you need examples, copy the genomes form the `Example/Genomes` folder. Then enter:
 
 ```
+conda activate ribotree
 cd /genomes
 python  ../identifyHMM.py --markerdb ../hug_ribosomalmarkers.hmm --performProdigal --outPrefix user .fna
 ```
