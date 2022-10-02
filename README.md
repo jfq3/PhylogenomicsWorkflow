@@ -1,3 +1,13 @@
+I had several problems following the original tutorial hosted at https://github.com/edgraham/PhylogenomicsWorkflow.
+
+For one, the indentation in the python script identifyHMM was not consistent. In this repository, I have renamed the script by adding the extention ".py" and made the indentation consistent.
+
+The other problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by installing all of the required dependecies specified in the orignal README in one environment named ribotree, and Binsamity alone in anoher environment named binsanity. There may be a better way; I will have to explore for such. See https://github.com/jfq3/Virtual-Environments for yml files for my conda installations of ribotree and binsanity.
+
+The tutorial places unkown genomes in a tree of reference genomes made up of 100 Proteobacteria belonging to the Alpahproteobacteria and Gammaproteobacteria. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla_Lite genomes.
+
+---
+The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
 ## Making a Phylogenetic Tree ##
 
 So you've assembled and binned your metagenome, but whats the next step? Building a phylogenetic tree of course! 
