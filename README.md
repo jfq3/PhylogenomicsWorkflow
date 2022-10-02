@@ -1,3 +1,5 @@
+# README
+
 I had several problems following the original tutorial hosted at https://github.com/edgraham/PhylogenomicsWorkflow.
 
 For one, the indentation in the python script identifyHMM was not consistent. In this repository, I have renamed the script by adding the extention ".py" and made the indentation consistent.
@@ -7,6 +9,8 @@ Another problem I had was installing the requirements in a single conda environm
 The installation instructions in the original README does not specify version numbers. Thus when I created the conda environment ribotree the latest version of MUSCLE (version 5) was installed. The muscle command in the original tutorial script had to be changed to work with the newer version of MUSCLE.
 
 The tutorial places unkown genomes in a tree of reference genomes made up of 100 *Proteobacteria* belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla_Lite genomes. I placed these in the directory `phyla_ref`.
+
+You can create conda environments of ribotree and binsanity using the `yml` files in my repository Virtual-Environments.
 
 ---
 The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
