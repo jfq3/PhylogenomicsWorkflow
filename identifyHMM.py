@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python
 
 """
 Using a set of phylogenetic markers BLAST protein sequences of target
@@ -53,7 +53,7 @@ for line in open(markerdb, "r"):
     line = line.rstrip()
     if line[:4] == "NAME":
         marker_list.append(line.split()[1])
-        print "Made markers list"
+        print("Made markers list")
 num_markers = len(marker_list)
 
 for in_faa in input_proteins:
@@ -74,7 +74,7 @@ for active_hmm in hmm_names:
         if line[0] != "#":
             line_info = line.split()
             try:
-                if line_info[2] in genome_marker_count[genome_name].keys():
+                if line_info[2] in list(genome_marker_count[genome_name].keys()):
                     if line_info[0] != genome_marker_count[genome_name][line_info[2]]:
                         genome_marker_count[genome_name][line_info[2]] = "empty"
                 else:
@@ -91,16 +91,16 @@ for genome in genome_marker_count:
             remove.append(i)
     for x in remove:
         del genome_marker_count[genome][x]
-    if float(len(genome_marker_count[genome].keys())) >= 1:
+    if float(len(list(genome_marker_count[genome].keys()))) >= 1:
         reverse_gene_info = {}
         for k in genome_marker_count[genome]:
             reverse_gene_info[genome_marker_count[genome][k]] = k
     for record in SeqIO.parse(open(str(str(genome)+".faa"), "r"), "fasta"):
-        if record.id in reverse_gene_info.keys():
+        if record.id in list(reverse_gene_info.keys()):
             marker = reverse_gene_info[record.id]
             out_file = open("%s_%s.faa" % (outname, marker), "a")
             out_file.write(">%s\n" % (genome) +str(record.seq)+"\n")
             out_file.close()
-    if float(len(genome_marker_count[genome].keys())) < float(1):
-        print str(genome) + " markers = " + str(len(genome_marker_count[genome].keys()))
+    if float(len(list(genome_marker_count[genome].keys()))) < float(1):
+        print(str(genome) + " markers = " + str(len(list(genome_marker_count[genome].keys()))))
 
