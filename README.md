@@ -4,13 +4,24 @@ I had several problems following the original tutorial hosted at https://github.
 
 For one, the indentation in the python script identifyHMM was not consistent. In this repository, I have renamed the script by adding the extention ".py" and made the indentation consistent.
 
-Another problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) gives instrucitons  for a native installation and specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by installing all of the required dependecies specified in the orignal README in one environment named ribotree, and Binsamity alone in anoher environment named binsanity. There may be a better way; I will have to explore for such. See https://github.com/jfq3/Virtual-Environments for yml files for my conda installations of ribotree and binsanity.
+Another problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) gives instrucitons  for a native installation and specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by converting identifyHMM.py from a python 2.7 script to python 3 and not specifying a python version when creating the environment. To create the conda environment `ribotree` I used the following command:
 
-The installation instructions in the original README does not specify version numbers. Thus when I created the conda environment ribotree the latest version of MUSCLE (version 5) was installed. The muscle command in the original tutorial script had to be changed to work with the newer version of MUSCLE.
+```
+conda create -n ribotree -c anaconda -c bioconda biopython hmmer prodigal binsanity muscle trimal fasttree
+```
+Alternatively, you may use the `ribotree.yml` file found at https://github.com/jfq3/Virtual-Environments with the following:
 
-The tutorial places unkown genomes in a tree of reference genomes made up of 100 *Proteobacteria* belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla_Lite genomes. I placed these in the directory `phyla_ref`.
+```
+cd
+wget https://github.com/jfq3/Virtual-Environments/raw/master/ribotree.yml
+conda env create -f ribotree.yml
+```
 
-You can create conda environments of ribotree and binsanity using the `yml` files in my repository Virtual-Environments.
+The installation instructions in the original README does not specify version numbers. Thus when I created the conda environment ribotree the latest version of MUSCLE (version 5) was installed. I had to change the muscle command in the original tutorial script to work with the newer version of MUSCLE.
+
+The tutorial places unkown genomes in a tree of reference genomes made up of 100 *Proteobacteria* belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. This original reference set is in the directory `Example/HugRef/`. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla\_Lite genomes. I placed the resulting files in the directory `phyla_ref`.
+
+Read the `directions.md` file for how to create a tree following my changes.  
 
 ---
 The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
