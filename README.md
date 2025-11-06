@@ -24,6 +24,7 @@ The tutorial places unkown genomes in a tree of reference genomes made up of 100
 Read the `directions.md` file for how to create a tree following my changes.  
 
 ---
+DO NOT FOLLOW THE DIRECTIONS BELOW THIS LINE!!!
 The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
 ## Making a Phylogenetic Tree ##
 
@@ -232,3 +233,4 @@ FastTree -gamma -lg Dataset1.HugRibosomal.trimmed.concat.aln > Dataset1.HugRibos
 ## Step 8: View Tree ##
 
 Now you have a newick file which can be viewed in a variety of tree views and edited. One of my favorite tools for making publication quality trees is [ITOL](https://itol.embl.de/)!
+
