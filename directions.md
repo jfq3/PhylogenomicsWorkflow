@@ -27,7 +27,9 @@ Alternatively, you could put faa sequence files for your genomes in the `genomes
 ```
 python ../identifyHMM.py --markerdb ../hug_ribosomalmarkers.hmm --outPrefix user .faa
 ```
-Combine reference protein sequences and genome protein sequences:
+The above commands extract the marker genes from the genomes in the `genomes` directory. It can take a few minutes, depending on the number of genomes submitted. When it finishes, it will print to the screen "Made markers list" 16 times, one line for each of the marker genes.  
+
+Combine reference protein sequences and genome protein sequences. In this tutorial, the reference protein sequences are the ones in the `phyla_ref` directory.  
 
 ```
 while read p; do cat ../phyla_ref/phyla_"$p".faa user_"$p".faa > Dataset1_"$p".faa; done < ../hug_marker_list.txt
@@ -59,6 +61,7 @@ concat -f . -e .trimmed.aln --Prefix Dataset1 -o Dataset1.PhylaRibosomal.trimmed
 The last step is to generate the tree:
 
 ```
-FastTree -gamma -lg Dataset1.PhylaRibosomal.trimmed.concat.aln > Dataset1.PhylalsRibosomal.trimmed.concat.newick
-conda deactivate
+FastTree -gamma -lg Dataset1.PhylaRibosomal.trimmed.concat.aln > Dataset1.PhylaRibosomal.trimmed.concat.newick
+
+micromamba deactivate
 ```
