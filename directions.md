@@ -1,6 +1,6 @@
 # Steps for making the tree
 
-If you have not already, create the conda environment ribotree using the `ribotree.yml` file in my repository Virtual-Environments.
+If you have not already, create the environment ribotree using the `ribotree.yml` file in my repository Virtual-Environments. I suggest that you use micromamba for creating your environments.  
 
 Clone this repository to a directory on your computer.
 
@@ -8,17 +8,23 @@ Clone this repository to a directory on your computer.
 git clone https://github.com/jfq3/PhylogenomicsWorkflow.git
 ```
 
-Put genomes of interest in the directory genomes; no other files (except `.git.keep`) shoud be present. If you need examples to run this as a tutorial, copy the genomes from the `Example/Genomes` directory. Then enter:
+Put genomes of interest in the directory genomes; no other files (except `.git.keep`) shoud be present. If you need examples to run this as a tutorial, copy the genomes from the `Example/Genomes` directory. To so so, cd into the `PhylogenomicsWorkflow/genomes` directory enter:
 
 ```
-conda activate ribotree
-cd genomes
+cp ../Example/Genomes/*.fna ./
+```
+Then enter:
+
+```
+micromamba activate ribotree
+
+cd PhylogenomicsWorkflow/genomes # if not already there
+
 python  ../identifyHMM.py --markerdb ../hug_ribosomalmarkers.hmm --performProdigal --outPrefix user .fna
 ```
-Alternatively, you could put faa sequence files for your genomes in the `genomes` directory. In that case you do not need to (re-run) Prodigal, and the command would be:
+Alternatively, you could put faa sequence files for your genomes in the `genomes` directory. In that case you do not need to run Prodigal, and the command would be:
 
 ```
-cd genomes
 python ../identifyHMM.py --markerdb ../hug_ribosomalmarkers.hmm --outPrefix user .faa
 ```
 Combine reference protein sequences and genome protein sequences:
@@ -42,10 +48,9 @@ This can generate many lines of:
 ```
 Error: the symbol '*' is incorrect
 ```
-This is because the muscle alignments may contain the character "*" which designates a single  fully conserved residue. I think trimal shoudl be able to handle it as such, but currently does not. In any event, the results are still good.
+This is because the muscle alignments may contain the character "*" which designates a single  fully conserved residue. I think trimal shoudl be able to handle it as such, but currently does not. In any event, you may ignore the error messages. The results are still good.
 
 The next step is to concatenate the alignments of the ribosomal protein sequences. This is done with the `concat` function in `BinSanity`. So:
-
 
 ```
 concat -f . -e .trimmed.aln --Prefix Dataset1 -o Dataset1.PhylaRibosomal.trimmed.concat.aln -N 4
