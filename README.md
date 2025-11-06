@@ -1,109 +1,39 @@
 # README
 
+The objective of this workflow is to place genomes of interest in a tree of reference genomes using concatenated alignments of 16 ribosomal proteins that tend to be syntenic and colocated. These 16 ribosomal proteins were used in [Hug et al. 2016](10.1038/nmicrobiol.2016.48).
+
 I had several problems following the original tutorial hosted at https://github.com/edgraham/PhylogenomicsWorkflow.
 
 For one, the indentation in the python script identifyHMM was not consistent. In this repository, I have renamed the script by adding the extention ".py" and made the indentation consistent.
 
-Another problem I had was installing the requirements in a single conda environment. The original README.md (inserted below) gives instrucitons  for a native installation and specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by converting identifyHMM.py from a python 2.7 script to python 3 and not specifying a python version when creating the environment. To create the conda environment `ribotree` I used the following command, but to insure that you use the same environment I created, you should install `ribotree` using the yml file as in the susequent code block.
+Another problem I had was installing the requirements in a single conda environment. The original README.md gives instrucitons  for a native installation and specifies python 2.7, but BinSanity is a python 3 script. I think this is the reason conda was never able to solve a single environment.  I solved the problem by converting identifyHMM.py from a python 2.7 script to python 3 and not specifying a python version when creating the environment. 
 
-```
-conda create -n ribotree -c anaconda -c bioconda biopython hmmer prodigal binsanity muscle trimal fasttree
-```
-Alternatively, you may use the `ribotree.yml` file found at https://github.com/jfq3/Virtual-Environments with the following:
+I also had to edit the MUSCLE command to work with the newer version of MUSCLE that is part of the `ribotree` environment I created.  
+
+I suggest that you use `micromamba` to manage your conda environments. If you are using `conda` or `mamaba`, substitute one of those names in the installation code below:    
 
 ```
 cd
 wget https://github.com/jfq3/Virtual-Environments/raw/master/ribotree.yml
-conda env create -f ribotree.yml
+micromamba env create -f ribotree.yml
 ```
 
-The installation instructions in the original README does not specify version numbers. Thus when I created the conda environment ribotree the latest version of MUSCLE (version 5) was installed. I had to change the muscle command in the original tutorial script to work with the newer version of MUSCLE.
+Instructions for this workflow are in the file `directions.md`.  
 
-The tutorial places unkown genomes in a tree of reference genomes made up of 100 *Proteobacteria* belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. The reference set consists of 16 faa files, each containing one of the 16 ribosomal gene sequences for these 100 reference genomes. This original reference set is in the directory `Example/HugRef/`. To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. I made this database by running identifyHMM on the Phyla\_Lite genomes. I placed the resulting files in the directory `phyla_ref`.
+There are three reference data sets in this repository.  
 
-**Read the `directions.md` file for how to create a tree following my changes.**  
-
----
-## DO NOT FOLLOW THE DIRECTIONS BELOW THIS LINE!!!  They do not apply to this forked version of the repository.  
-The orignal README from https://github.com/edgraham/PhylogenomicsWorkflow follows:
-## Making a Phylogenetic Tree ##
-
-So you've assembled and binned your metagenome, but whats the next step? Building a phylogenetic tree of course! 
-This is a breif tutorial with associated scripts to show you how to build a phylogenetic tree using the 16 ribosomal proteins that tend to be syntenic and colocated. These 16 ribosomal proteins were used in [Hug et al. 2016](10.1038/nmicrobiol.2016.48).
+**`phyla_lite`**  
+ To place unknown genomes in relation to known phyla, I made a reference set from the genomes in the MiGA Phyla\_Lite database. There is one genome per phylum.  I made this database by running identifyHMM on the Phyla\_Lite genomes. 
  
-This tutorial will go through the following:
+**`phyla_ref_edited`**
+This is the same data base as `phyla_lite` except that I shortened the names to just genus and species by removing the genome identifier.  
 
-1. How to generate gene predictions using prodigal for genomes of interest
+**`HugRef`**
+The reference data from the original repository. It was made from 100 *Pseudomonadota* genomes belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. 
 
-2. How to identify ribosomal proteins using an hmm model
+## Read the `directions.md` file for how to create a tree following my changes. ##
 
-3. How to align, trim, and concatenate proteins for a phylogenetic tree
-
-4. building a phylogenetic tree
-
-**This procedure assumes that you have binned your assembled metagenomes and have Metagenome Assembled Genomes (MAGs) ready for analysis.**
-
-Another version of this protocol with more detailed information on what should be in your directory after each command is found on ProtocolsIO: dx.doi.org/10.17504/protocols.io.mp5c5q6
-
-**To cite this workflow reference this paper:**
-
- **Graham, E. D., J. F. Heidelberg, and B. J. Tully. 'Potential for primary productivity in a globally-distributed bacterial phototroph.' The ISME journal (2018)**
- 
-## Required Dependencies ##
-
-To run this protocol you will need the following programs:
-
-[Python2.7](https://www.python.org/download/releases/2.7/)
-
-[BioPython](http://biopython.org/)
-
-[HMMER](http://hmmer.org/download.html)
-
-[Prodigal](https://github.com/hyattpd/prodigal/wiki/Installation)
-
-[BinSanity](https://github.com/edgraham/BinSanity/wiki/Installation)
-
-[Muscle](https://www.drive5.com/muscle/manual/install.html)
-
-[TrimAL](http://trimal.cgenomics.org/)
-
-[FastTree](http://www.microbesonline.org/fasttree/)
-
-
-HMMER and BinSanity can be installed as follows:
-
->**Install [HMMER](http://hmmer.org/)**
-   * HMMER can be downloaded like this:
-```
-$ wget http://eddylab.org/software/hmmer3/3.1b2/hmmer-3.1b2.tar.gz
-$ tar -zxvf hmmer-3.1b2.tar.gz
-$ cd hmmer-3.1b2
-$ ./configure && make && sudo make install
-$ cd easel && make check && sudo make install
-```
->**Install [BinSanity](https://github.com/edgraham/BinSanity/wiki/Installation)**
-
-`sudo pip install BinSanity`
-
-The remaining dependencies can be installed as executable binaries.
-
-
-### Step 1: Download Github Repo ###
-
-First you need to get access to all of the files and scripts needed to run this workflow. Run the following command to install.
-
-```
-$ git clone https://github.com/edgraham/PhylogenomicsWorkflow.git
-$ cd PhylogenomicsWorkflow/Example
-```
-
-### Step 2: Run IdentifyHMM to extract marker genes ###
-The primary script in this workflow in `identifyHMM`.
-This program does the following:
-
-1. Runs prodigal on MAGs
-2. Runs `hmmsearch` on these gene calls
-3. Parses out genes matching one of the 16 Ribosomal protiens
+The following was extracted from the README file for the original repository.  
 
 The script relies on the user providing the location of a file containing Hidden Markov Models (HMMs) for their genes of interest. Here we have provided you with a file called `hug_ribosomalmarkers.hmm`. This contains HMM models for 16 Ribosomal proteins: RpL14, RpL15, RpL16 ,RpL18, RpL22, RpL24 ,RpL2, RpL3, RpL4, RpL5, RpL6, RpS10, RpS17, RpS19, RpS3, RpS8. 
 
@@ -132,107 +62,3 @@ optional arguments:
   -E E                  Set E-Value to be used in hmmsearch. Default: 1E-5
 
 ```
-The best way to show how the script is used by using an example. What I have provided on the github is an directory called `Example` that contains two subdirectorys. One containing MAGs (`Genomes`) and one containing reference ribosomal proteins pulled from NCBI (`HugRef`).
-
-**Note** When using `identifyHMM` on your own data you need to remember that you should be in the directory containing your MAGs when you run the program and ensure that the only genomes in this directory are the genomes of interest. The program will parse through every file with the suffix given as the [input]. So in this case our input is `.fna`. Second, if you want to run identifyHMM with your own gene calls you will want to exclude the `--performProdigal` flag and be sure that your gene calls end with the suffix `.faa` and are in the same directory as the genomes of interest.
-
-
-Now you should enter the directory containing your genomes (in our case /PhylogenomicsWorkflow/Example/Genomes) 
-
-```
-$ cd Example/Genomes
-```
-
-Once in the `Genomes` directory run `identifyHMM` as Follows:
-
-```
-$ identifyHMM --markerdb ../../hug_ribosomalmarkers.hmm --performProdigal --outPrefix HUG .fna
-
-```
-
-The output of this will be 16 `.faa` files appended with the prefix spefied by `--outPrefix`, 5 `.faa` files corresponding to the prodigal gene calls, and 5 hmm reports (Stored in the `.tbl` files). So the files that look like `HUG_RpL14.faa` are ribosomal proteins pulled from your genomes of interest.
- 
- 
- ## Step 3: Combine Reference Proteins with proteins from your MAGs ##
- 
- Now that we have extracted marker genes from our genomes of interest we can merge together the Ribosomal Protein calls we just made on our genomes of interest with those in the directory '/PhylogenomicsWorkflow/Example/HugRef' accordingly.
-
- To do this we will use a quick bash trick that uses the text file `hug_marker_list.txt` which contains a list of the marker proteins we are searching for. Use the following Bash command:
- 
-```
- while read p; do cat ../HugRef/ExampleRefSet."$p".faa HUG_"$p".faa > Dataset1_"$p".faa; done < ../../hug_marker_list.txt
-``` 
-This bash script is iterating through the list given in `hug_marker_list.txt` and concatenate appropriate reference and experimental protein sets. So for example it would concatenate `ExampleRefSet.RpL6.faa` and `Hug_RpL6.faa` into `Dataset1_RpL6.faa`. 
-
-
-## Step 4: Align your Proteins ##
-
-Now that we have 16 files containing Ribosomal proteins from our 5 unknown genomes and 100 references we can move on to aligning our proteins.
-To align our proteins we can use muscle (You could also alternatively use [MAFFT](https://mafft.cbrc.jp/alignment/software/algorithms/algorithms.html) here):
-
-```
-while read p; do muscle -maxiters 16 -in Dataset1_"$p".faa -out Dataset1_"$p".aln; done < ../../hug_marker_list.txt
-```
-We will use the same trick as above where we feed the list of ribosomal markers in `hug_marker_list.txt` into a bash loop thar runs muscle on head of the protein fasta files we generated. This will end in 16 alignment (`.aln`) files.
-
-
-## Step 5: Trim your alignments ##
-
-Now that we have our alignments we need to trim those alignments. There are many programs that do this and I implore you to try a couple and see how different ones work, or even try manual trimming. Here we will use Trimal because its automated and works quickly when running alignments with lots of sequences.
-
-You can run the following to trim your alignments:
-
-```
-while read p;do trimal -automated1 -in Dataset1_"$p".aln -out Dataset1_"$p".trimmed.aln; done < ../../hug_marker_list.txt
-```
-
-Once your sequences are trimmed I advise manually inspecting the file to ensure everything looks right.
-
-## Step 6: Concatenate proteins ##
-
-Now that you have the trimmed and aligned sequences you can concatenate these 16 files. To do this we will use the `concat` script packaged with BinSanity. 
-
-Usage is shown below:
-```
-usage: concat -f directory -e Alignment Extension --Prefix file linker -o output
-
-    *****************************************************************************
-    *********************************BinSanity***********************************
-    **     The `concat` script is used to concatenate multiple sequence        **
-    **     alignments for conducting a phylogenomic analysis. Note that you    **
-    **     receive an error if there are any duplicate sequence ids in an      **
-    **     alignment.
-    *****************************************************************************
-
-optional arguments:
-  -h, --help  show this help message and exit
-  -f          Specify directory where alignments are
-  -e          Specify the extension for your alignments (must be in Fasta format)
-  --Prefix    Specify the prefix that links your alignments (ex: if you have two alignments TOBG_RpL10, TOBG_RpL24, the --Prefix would be TOBG
-  -o          Specify output file
-  -N          Specify the minimum number of sequences needed to be included in concatenation
-  ```
-  
-  Run it as follows:
-  
-```
-  concat -f . -e .trimmed.aln --Prefix Dataset1 -o Dataset1.HugRibosomal.trimmed.concat.aln -N 8
-
-``` 
-## Step 7: Build the Tree ##
-
-You now have a concatenated alignment 'Dataset1.HugRibosomal.trimmed.concat.aln' which can be used to build a phylogenetic tree.
-
-We will be using FastTree with the `-gamma` and `-lg` parameters. These parameters are optional and just indicate what models we would like to  use for branch length calculation and amino acid evolution respectively. Feel free to adjust these for your own purposes after looking at the FastTree Manual.
-
-```
-FastTree -gamma -lg Dataset1.HugRibosomal.trimmed.concat.aln > Dataset1.HugRibosomal.trimmed.concat.newick
-
-```
-
-## Step 8: View Tree ##
-
-Now you have a newick file which can be viewed in a variety of tree views and edited. One of my favorite tools for making publication quality trees is [ITOL](https://itol.embl.de/)!
-
-
-
