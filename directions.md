@@ -81,7 +81,7 @@ The next step is to concatenate the alignments of the ribosomal protein sequence
 concat -f . -e .trimmed.aln --Prefix Dataset1 -o Dataset1.PhylaRibosomal.trimmed.concat.aln -N 4
 ```
 
-**8. Generate the tree***  
+**8. Generate the tree**  
 
 The last step is to generate the tree with FastTree:
 
