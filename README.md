@@ -1,6 +1,6 @@
 # README
 
-The objective of this workflow is to place genomes of interest in a tree of reference genomes using concatenated alignments of 16 ribosomal proteins that tend to be syntenic and colocated. These 16 ribosomal proteins were used in [Hug et al. 2016](10.1038/nmicrobiol.2016.48).
+The objective of this workflow is to place genomes of interest in a tree of reference genomes using concatenated alignments of 16 ribosomal proteins that tend to be syntenic and colocated. These 16 ribosomal proteins were used in [Hug et al. 2016](https://doi.org/10.1111/1462-2920.12930).
 
 I had several problems following the original tutorial hosted at https://github.com/edgraham/PhylogenomicsWorkflow.
 
@@ -29,7 +29,7 @@ There are three reference data sets in this repository.
 This is the same data base as `phyla_lite` except that I shortened the names to just genus and species by removing the genome identifier.  
 
 **`HugRef`**
-The reference data from the original repository. It was made from 100 *Pseudomonadota* genomes belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. 
+The reference data from the original repository. It was made from 100 *Pseudomonadota* genomes belonging to the *Alpahproteobacteria* and *Gammaproteobacteria*. It is under the `Example` directory.  
 
 ## Read the `directions.md` file for how to create a tree following my changes. ##
 
